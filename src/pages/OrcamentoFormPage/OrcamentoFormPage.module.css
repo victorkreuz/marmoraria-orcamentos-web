@@ -1,0 +1,170 @@
+.loading { color: var(--color-secondary); }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 1000px;
+}
+
+.section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.625rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.875rem;
+}
+
+.field { display: flex; flex-direction: column; gap: 0.375rem; }
+.fieldRow {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr 1fr;
+  gap: 0.625rem;
+}
+
+.label { font-size: var(--font-size-sm); font-weight: 500; color: var(--color-text-secondary); }
+
+.input, .textarea {
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: #1a1a1a;
+  width: 100%;
+}
+.input:focus, .textarea:focus { outline: none; border-color: var(--color-primary); }
+.textarea { resize: vertical; }
+
+.readonly {
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+/* Items */
+.itemsList { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 0.75rem; }
+
+.itemCard {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  background: var(--color-bg);
+}
+
+.itemHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.itemNum {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.removeItemBtn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.25rem;
+  color: var(--color-danger);
+  display: flex;
+  align-items: center;
+}
+.removeItemBtn:hover { background: var(--color-danger-bg); }
+
+.addItemBtn {
+  background: transparent;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  width: 100%;
+  text-align: center;
+}
+.addItemBtn:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+/* Financeiro */
+.checkboxField { display: flex; align-items: center; }
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.checkboxLabel input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+
+.totalBox {
+  margin-top: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  max-width: 360px;
+  margin-left: auto;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.875rem;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border);
+}
+.totalRow:last-child { border-bottom: none; }
+
+.totalFinal {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+  font-size: var(--font-size-base);
+}
+
+/* Actions */
+.headerActions, .formActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.formActions { justify-content: flex-end; padding-bottom: 1rem; }
+
+.cancelBtn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  font-size: var(--font-size-sm);
+}
+.cancelBtn:hover:not(:disabled) { background: var(--color-border); }
+
+.saveBtn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  background: var(--color-primary);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+.saveBtn:hover:not(:disabled) { background: var(--color-primary-hover); }
+.saveBtn:disabled, .cancelBtn:disabled { opacity: 0.6; cursor: not-allowed; }

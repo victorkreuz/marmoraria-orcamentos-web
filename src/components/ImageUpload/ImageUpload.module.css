@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.addBtn {
+  background: var(--color-bg);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.875rem;
+  color: #4b5563;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.addBtn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.hiddenInput {
+  display: none;
+}
+
+/* chips de arquivo */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem 0.2rem 0.75rem;
+  font-size: 0.78rem;
+  color: #1d4ed8;
+  max-width: 200px;
+}
+
+.chipName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chipRemove {
+  background: none;
+  border: none;
+  padding: 0;
+  line-height: 1;
+  font-size: 1rem;
+  color: #6b7280;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.chipRemove:hover {
+  color: #ef4444;
+}
+
+.uploadError {
+  font-size: 0.78rem;
+  color: #ef4444;
+  width: 100%;
+}

@@ -1,0 +1,62 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: var(--shadow);
+}
+
+.message {
+  font-size: var(--font-size-base);
+  color: #1a1a1a;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.cancelBtn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: #1a1a1a;
+  font-size: var(--font-size-sm);
+}
+
+.cancelBtn:hover:not(:disabled) {
+  background: var(--color-border);
+}
+
+.confirmBtn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  background: #ef4444;
+  color: #fff;
+  font-size: var(--font-size-sm);
+}
+
+.confirmBtn:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.cancelBtn:disabled,
+.confirmBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,0 +1,106 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── Top navigation ─────────────────────────── */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  background: var(--color-primary);
+  padding: 0 1.5rem;
+  height: 48px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.logo {
+  color: #fff;
+  font-weight: 700;
+  font-size: var(--font-size-base);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+
+.navItems {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+  flex: 1;
+}
+
+.navLink {
+  color: var(--color-nav-muted);
+  padding: 0 0.75rem;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+
+.navLink:hover { color: #fff; }
+
+.active {
+  color: #fff;
+  border-bottom-color: rgba(255,255,255,0.7);
+}
+
+.logoutBtn {
+  background: transparent;
+  color: var(--color-nav-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.18);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.logoutBtn:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,0.45);
+}
+
+/* ── Content area ──────────────────────────── */
+.content {
+  flex: 1;
+  padding: 1.5rem;
+  background: var(--color-bg);
+}
+
+.contentWrap {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Page header (inside content) ─────────── */
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pageTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.pageAction {
+  display: flex;
+  gap: 0.5rem;
+}
