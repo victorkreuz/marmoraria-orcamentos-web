@@ -94,8 +94,8 @@
 }
 .table tbody tr:last-child td { border-bottom: none; }
 .numCell { color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
-.itemName { font-weight: 500; }
-.itemDesc { font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.125rem; }
+.itemName { font-weight: 500; word-break: break-word; overflow-wrap: anywhere; }
+.itemDesc { font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.125rem; word-break: break-word; overflow-wrap: anywhere; }
 .subtotalCell { font-weight: 500; }
 
 .totalBox {
