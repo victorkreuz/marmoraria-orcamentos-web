@@ -82,6 +82,15 @@ textarea:focus {
 
 table { border-collapse: collapse; width: 100%; }
 
+h1, h2, h3, h4, h5, h6,
+p, span, label, td, th, li {
+  user-select: none;
+}
+
+input, textarea, [contenteditable] {
+  user-select: text;
+}
+
 /* ── Scrollbar ──────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
