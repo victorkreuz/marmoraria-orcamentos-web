@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Layout } from '../../components/Layout/Layout';
 import { StatusBadge } from '../../components/StatusBadge/StatusBadge';
-import { getOrcamento, previewOrcamentoHtml, downloadOrcamentoPdf } from '../../api/orcamentos.service';
+import { getOrcamento, previewOrcamentoHtml } from '../../api/orcamentos.service';
 import { getObservacoes } from '../../api/observacoes.service';
-import type { Orcamento, Observacao, ModoDocumento } from '../../types/api.types';
+import type { Orcamento, Observacao } from '../../types/api.types';
 import { formatMoney, formatDate } from '../../utils/formatters';
 import styles from './OrcamentoDetailPage.module.css';
 
@@ -23,14 +23,14 @@ export function OrcamentoDetailPage() {
     'O valor desta proposta é válido até a data de vencimento informada. Após esse prazo, novo orçamento poderá ser necessário.\n' +
     'A produção somente é iniciada após aprovação formal e pagamento combinado. Medições finais são realizadas antes da fabricação.';
 
-  const [modo, setModo] = useState<ModoDocumento>('completa');
+  const [comCapa, setComCapa] = useState(false);
   const [ocultarTotalGeral, setOcultarTotalGeral] = useState(false);
   const [observacoesDocumento, setObservacoesDocumento] = useState(OBS_PADRAO);
   const [gerando, setGerando] = useState(false);
   const [docError, setDocError] = useState('');
 
   function opcoes() {
-    return { modo, ocultarTotalGeral, observacoesDocumento };
+    return { comCapa, ocultarTotalGeral, observacoesDocumento };
   }
 
   async function handlePreview() {
@@ -56,15 +56,16 @@ export function OrcamentoDetailPage() {
     setDocError('');
     setGerando(true);
     try {
-      const blob = await downloadOrcamentoPdf(Number(id), opcoes());
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `orcamento-${orcamento?.numero ?? id}.pdf`;
-      a.click();
-      URL.revokeObjectURL(url);
+      const html = await previewOrcamentoHtml(Number(id), opcoes());
+      const win = window.open('', '_blank');
+      if (win) {
+        win.document.write(html);
+        win.document.close();
+        win.onload = () => win.print();
+        setTimeout(() => { try { win.print(); } catch { /* já imprimiu */ } }, 1200);
+      }
     } catch {
-      setDocError('Erro ao gerar PDF. Verifique se o Chrome/Edge está instalado no servidor.');
+      setDocError('Erro ao gerar documento. Tente novamente.');
     } finally {
       setGerando(false);
     }
@@ -94,7 +95,7 @@ export function OrcamentoDetailPage() {
 
   return (
     <Layout
-      title={`Orçamento ${orcamento.numero}`}
+      title={`Orçamento ${orcamento.numero ?? orcamento.id}`}
       action={
         <div className={styles.headerActions}>
           <button className={styles.editBtn} onClick={() => navigate(`/orcamentos/${id}/editar`)}>
@@ -204,27 +205,8 @@ export function OrcamentoDetailPage() {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Gerar Documento</h2>
             <div className={styles.modosList}>
-              <ModoOption
-                value="completa"
-                current={modo}
-                onChange={setModo}
-                label="Proposta completa"
-                desc="Capa, resumo, identificação, projeto, itens e totais"
-              />
-              <ModoOption
-                value="objetiva"
-                current={modo}
-                onChange={setModo}
-                label="Proposta objetiva"
-                desc="Identificação, itens e totais — sem capa nem resumo"
-              />
-              <ModoOption
-                value="totais"
-                current={modo}
-                onChange={setModo}
-                label="Apenas totais"
-                desc="Identificação e totais — sem detalhamento de itens"
-              />
+              <ModoCapaOption value={true} current={comCapa} onChange={setComCapa} label="Com capa" desc="Capa + identificação, projeto, itens e totais" />
+              <ModoCapaOption value={false} current={comCapa} onChange={setComCapa} label="Sem capa" desc="Identificação, projeto, itens e totais" />
             </div>
             <div className={styles.optionsList}>
               <CheckboxOption label="Ocultar total geral" checked={ocultarTotalGeral} onChange={setOcultarTotalGeral} />
@@ -268,7 +250,7 @@ export function OrcamentoDetailPage() {
                 {gerando ? 'Gerando...' : 'Pré-visualizar'}
               </button>
               <button className={styles.downloadBtn} onClick={handleDownloadPdf} disabled={gerando}>
-                {gerando ? 'Gerando...' : 'Baixar PDF'}
+                {gerando ? 'Gerando...' : 'Imprimir / Salvar PDF'}
               </button>
             </div>
             {docError && (
@@ -308,17 +290,17 @@ function CheckboxOption({ label, checked, onChange }: { label: string; checked: 
   );
 }
 
-function ModoOption({ value, current, onChange, label, desc }: {
-  value: ModoDocumento;
-  current: ModoDocumento;
-  onChange: (v: ModoDocumento) => void;
+function ModoCapaOption({ value, current, onChange, label, desc }: {
+  value: boolean;
+  current: boolean;
+  onChange: (v: boolean) => void;
   label: string;
   desc: string;
 }) {
   const active = value === current;
   return (
     <label className={`${styles.modoOption} ${active ? styles.modoOptionActive : ''}`}>
-      <input type="radio" name="modoDocumento" value={value} checked={active} onChange={() => onChange(value)} />
+      <input type="radio" name="modoDocumento" checked={active} onChange={() => onChange(value)} />
       <div>
         <span className={styles.modoLabel}>{label}</span>
         <span className={styles.modoDesc}>{desc}</span>

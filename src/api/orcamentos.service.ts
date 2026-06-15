@@ -26,17 +26,10 @@ export async function deleteOrcamento(id: number): Promise<void> {
   await httpClient.delete(`/orcamento/${id}`);
 }
 
-const MODOS: Record<string, { imprimirCapa: boolean; imprimirResumo: boolean; orcamentoObjetivo: boolean; pularItens: boolean }> = {
-  completa:  { imprimirCapa: true,  imprimirResumo: true,  orcamentoObjetivo: false, pularItens: false },
-  objetiva:  { imprimirCapa: false, imprimirResumo: false, orcamentoObjetivo: true,  pularItens: false },
-  totais:    { imprimirCapa: false, imprimirResumo: false, orcamentoObjetivo: true,  pularItens: true  },
-};
-
 function toBackendPayload(options: GerarOrcamentoOptions) {
-  const modo = MODOS[options.modo] ?? MODOS.completa;
   return {
     opcoes: {
-      ...modo,
+      imprimirCapa: options.comCapa,
       imprimirTotal: !options.ocultarTotalGeral,
     },
     observacoesDocumento: options.observacoesDocumento || '',

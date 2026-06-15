@@ -139,10 +139,8 @@ export interface OrcamentoFormData {
   meioPagamentoId?: number;
 }
 
-export type ModoDocumento = 'completa' | 'objetiva' | 'totais';
-
 export interface GerarOrcamentoOptions {
-  modo: ModoDocumento;
+  comCapa: boolean;
   ocultarTotalGeral: boolean;
   observacoesDocumento: string;
 }
