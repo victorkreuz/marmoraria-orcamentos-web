@@ -142,6 +142,7 @@ export interface OrcamentoFormData {
 export interface GerarOrcamentoOptions {
   comCapa: boolean;
   ocultarTotalGeral: boolean;
+  ocultarProjeto: boolean;
   observacoesDocumento: string;
 }
 

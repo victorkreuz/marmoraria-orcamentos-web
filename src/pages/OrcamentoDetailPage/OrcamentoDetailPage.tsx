@@ -25,12 +25,13 @@ export function OrcamentoDetailPage() {
 
   const [comCapa, setComCapa] = useState(false);
   const [ocultarTotalGeral, setOcultarTotalGeral] = useState(false);
+  const [ocultarProjeto, setOcultarProjeto] = useState(false);
   const [observacoesDocumento, setObservacoesDocumento] = useState(OBS_PADRAO);
   const [gerando, setGerando] = useState(false);
   const [docError, setDocError] = useState('');
 
   function opcoes() {
-    return { comCapa, ocultarTotalGeral, observacoesDocumento };
+    return { comCapa, ocultarTotalGeral, ocultarProjeto, observacoesDocumento };
   }
 
   async function handlePreview() {
@@ -210,6 +211,7 @@ export function OrcamentoDetailPage() {
             </div>
             <div className={styles.optionsList}>
               <CheckboxOption label="Ocultar total geral" checked={ocultarTotalGeral} onChange={setOcultarTotalGeral} />
+              <CheckboxOption label="Ocultar informações do projeto" checked={ocultarProjeto} onChange={setOcultarProjeto} />
             </div>
             {observacoes.length > 0 && (
               <div className={styles.obsSelect}>

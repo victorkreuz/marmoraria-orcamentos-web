@@ -31,6 +31,7 @@ function toBackendPayload(options: GerarOrcamentoOptions) {
     opcoes: {
       imprimirCapa: options.comCapa,
       imprimirTotal: !options.ocultarTotalGeral,
+      imprimirProjeto: !options.ocultarProjeto,
     },
     observacoesDocumento: options.observacoesDocumento || '',
   };
