@@ -4,7 +4,7 @@ import { Layout } from '../../components/Layout/Layout';
 import { StatusBadge } from '../../components/StatusBadge/StatusBadge';
 import { ConfirmModal } from '../../components/ConfirmModal/ConfirmModal';
 import { getOrcamentos, deleteOrcamento } from '../../api/orcamentos.service';
-import type { Orcamento } from '../../types/api.types';
+import { statusParaExibicao, type Orcamento } from '../../types/api.types';
 import { formatMoney, formatDate } from '../../utils/formatters';
 import styles from './OrcamentosPage.module.css';
 
@@ -68,7 +68,7 @@ export function OrcamentosPage() {
                 <tr key={o.id} className={styles.row} onClick={() => navigate(`/orcamentos/${o.id}`)}>
                   <td className={styles.numCell}>{o.numero}</td>
                   <td className={styles.nameCell}>{o.cliente?.nome ?? '—'}</td>
-                  <td><StatusBadge status={o.statusOrcamento} /></td>
+                  <td><StatusBadge status={statusParaExibicao(o)} /></td>
                   <td>{formatDate(o.dataEmissao)}</td>
                   <td>R$ {formatMoney(o.financeiro?.totalFinal ?? o.valorTotal ?? 0)}</td>
                   <td className={styles.actions} onClick={(e) => e.stopPropagation()}>
