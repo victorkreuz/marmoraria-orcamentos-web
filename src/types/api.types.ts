@@ -143,6 +143,7 @@ export interface GerarOrcamentoOptions {
   comCapa: boolean;
   ocultarTotalGeral: boolean;
   ocultarProjeto: boolean;
+  ocultarProjetoImagens: boolean;
   observacoesDocumento: string;
 }
 
