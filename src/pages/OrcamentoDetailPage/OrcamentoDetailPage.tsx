@@ -4,7 +4,7 @@ import { Layout } from '../../components/Layout/Layout';
 import { StatusBadge } from '../../components/StatusBadge/StatusBadge';
 import { getOrcamento, previewOrcamentoHtml } from '../../api/orcamentos.service';
 import { getObservacoes } from '../../api/observacoes.service';
-import type { Orcamento, Observacao } from '../../types/api.types';
+import { statusParaExibicao, type Orcamento, type Observacao } from '../../types/api.types';
 import { formatMoney, formatDate } from '../../utils/formatters';
 import styles from './OrcamentoDetailPage.module.css';
 
@@ -112,7 +112,7 @@ export function OrcamentoDetailPage() {
             <h2 className={styles.sectionTitle}>Dados do Orçamento</h2>
             <div className={styles.grid2}>
               <Row label="Número" value={orcamento.numero} />
-              <Row label="Status" value={<StatusBadge status={orcamento.statusOrcamento} />} />
+              <Row label="Status" value={<StatusBadge status={statusParaExibicao(orcamento)} />} />
               <Row label="Cliente" value={orcamento.cliente?.nome} />
               <Row label="Emissão" value={formatDate(orcamento.dataEmissao)} />
               <Row label="Validade" value={`${orcamento.validadeDias} dias`} />

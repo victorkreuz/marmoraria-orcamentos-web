@@ -3,7 +3,7 @@ import { Layout } from '../../components/Layout/Layout';
 import { getOrcamentos } from '../../api/orcamentos.service';
 import { LoadError } from '../../components/LoadError/LoadError';
 import { describeLoadError } from '../../utils/loadError';
-import type { Orcamento } from '../../types/api.types';
+import { statusParaExibicao, type Orcamento } from '../../types/api.types';
 import { formatMoney } from '../../utils/formatters';
 import styles from './DashboardPage.module.css';
 
@@ -136,15 +136,16 @@ export function DashboardPage() {
   }
 
   const total = orcamentos.length;
-  const pendentes = orcamentos.filter((o) => ['SOLICITADO', 'ENVIADO'].includes(o.statusOrcamento)).length;
-  const aprovados = orcamentos.filter((o) => o.statusOrcamento === 'APROVADO').length;
+  const pendentes = orcamentos.filter((o) => ['SOLICITADO', 'ENVIADO'].includes(statusParaExibicao(o))).length;
+  const aprovados = orcamentos.filter((o) => statusParaExibicao(o) === 'APROVADO').length;
   const valorAprovado = orcamentos
-    .filter((o) => o.statusOrcamento === 'APROVADO')
+    .filter((o) => statusParaExibicao(o) === 'APROVADO')
     .reduce((s, o) => s + (o.financeiro?.totalFinal ?? o.valorTotal ?? 0), 0);
 
   const statusCounts: Record<string, number> = {};
   orcamentos.forEach((o) => {
-    statusCounts[o.statusOrcamento] = (statusCounts[o.statusOrcamento] ?? 0) + 1;
+    const status = statusParaExibicao(o);
+    statusCounts[status] = (statusCounts[status] ?? 0) + 1;
   });
 
   const donutData = [
@@ -158,7 +159,7 @@ export function DashboardPage() {
   const lineData = last6.map(({ month, label }) => ({
     month: label,
     count: orcamentos.filter(
-      (o) => o.statusOrcamento === 'APROVADO' && o.dataEmissao?.startsWith(month)
+      (o) => statusParaExibicao(o) === 'APROVADO' && o.dataEmissao?.startsWith(month)
     ).length,
   }));
 

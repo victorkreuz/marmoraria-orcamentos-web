@@ -94,7 +94,10 @@ export interface OrcamentoItem {
 export interface Orcamento {
   id: number;
   numero: string;
+  /** Valor bruto gravado no banco — usar apenas no formulário de edição. */
   statusOrcamento: OrcamentoStatus;
+  /** Status calculado (Solicitado/Enviado vencidos viram Expirado) — usar em badges, contadores e filtros. */
+  statusExibicao: OrcamentoStatus;
   cliente: Cliente;
   dataEmissao: string;
   validadeDias: number;
@@ -105,6 +108,15 @@ export interface Orcamento {
   valorTotal?: number;
   valorDesconto?: number;
   valorFrete?: number;
+}
+
+/**
+ * Status a usar em badges, contadores e filtros: prefere o valor calculado pelo backend
+ * (`statusExibicao`) e cai para o valor bruto (`statusOrcamento`) quando ausente — proteção
+ * caso este frontend seja implantado antes do backend passar a enviar `statusExibicao`.
+ */
+export function statusParaExibicao(o: Orcamento): OrcamentoStatus {
+  return o.statusExibicao ?? o.statusOrcamento;
 }
 
 // ── Payload enviado para salvar/editar ────────────────────────────────────
