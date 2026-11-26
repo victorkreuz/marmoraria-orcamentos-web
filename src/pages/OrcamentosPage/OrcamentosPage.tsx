@@ -4,6 +4,8 @@ import { Layout } from '../../components/Layout/Layout';
 import { StatusBadge } from '../../components/StatusBadge/StatusBadge';
 import { ConfirmModal } from '../../components/ConfirmModal/ConfirmModal';
 import { getOrcamentos, deleteOrcamento } from '../../api/orcamentos.service';
+import { LoadError } from '../../components/LoadError/LoadError';
+import { describeLoadError } from '../../utils/loadError';
 import type { Orcamento } from '../../types/api.types';
 import { formatMoney, formatDate } from '../../utils/formatters';
 import styles from './OrcamentosPage.module.css';
@@ -11,6 +13,7 @@ import styles from './OrcamentosPage.module.css';
 export function OrcamentosPage() {
   const [orcamentos, setOrcamentos] = useState<Orcamento[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Orcamento | null>(null);
   const [deleting, setDeleting] = useState(false);
   const navigate = useNavigate();
@@ -19,7 +22,9 @@ export function OrcamentosPage() {
 
   async function load() {
     setLoading(true);
+    setLoadError(null);
     try { setOrcamentos(await getOrcamentos()); }
+    catch (err) { setLoadError(describeLoadError(err)); }
     finally { setLoading(false); }
   }
 
@@ -49,6 +54,8 @@ export function OrcamentosPage() {
               <div key={i} className="skeleton" style={{ height: '42px', opacity: 1 - i * 0.08 }} />
             ))}
           </div>
+        ) : loadError ? (
+          <LoadError message={loadError} onRetry={load} />
         ) : (
           <table className={styles.table}>
             <thead>
