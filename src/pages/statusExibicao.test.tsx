@@ -70,7 +70,7 @@ describe('telas usam statusExibicao; só o formulário de edição usa statusOrc
     expect(screen.queryByText('Enviado')).toBeNull();
   });
 
-  it('detalhe mostra "Expirado" no badge', async () => {
+  it('detalhe mostra "Expirado" na linha Status (gravado como ENVIADO)', async () => {
     render(
       <AuthProvider>
         <MemoryRouter initialEntries={['/orcamentos/1']}>
@@ -78,7 +78,9 @@ describe('telas usam statusExibicao; só o formulário de edição usa statusOrc
         </MemoryRouter>
       </AuthProvider>,
     );
-    expect(await screen.findByText('Expirado')).toBeTruthy();
+    const linhaStatus = (await screen.findByText('Status')).parentElement;
+    expect(linhaStatus?.textContent).toContain('Expirado');
+    expect(linhaStatus?.textContent).not.toContain('Enviado');
     expect(screen.queryByText('Enviado')).toBeNull();
   });
 
