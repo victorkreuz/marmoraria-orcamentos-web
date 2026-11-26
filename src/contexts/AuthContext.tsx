@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import { login as apiLogin } from '../api/auth.service';
+import { isTokenExpired } from '../utils/jwt';
 import type { LoginRequest } from '../types/api.types';
 
 interface AuthContextValue {
@@ -11,8 +12,15 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+function readStoredToken(): string | null {
+  const stored = localStorage.getItem('jwtToken');
+  if (stored && !isTokenExpired(stored)) return stored;
+  if (stored) localStorage.removeItem('jwtToken');
+  return null;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem('jwtToken'));
+  const [token, setToken] = useState<string | null>(readStoredToken);
 
   const login = useCallback(async (data: LoginRequest) => {
     const res = await apiLogin(data);

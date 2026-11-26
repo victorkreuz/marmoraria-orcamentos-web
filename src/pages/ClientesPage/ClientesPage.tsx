@@ -3,6 +3,8 @@ import { Layout } from '../../components/Layout/Layout';
 import { ConfirmModal } from '../../components/ConfirmModal/ConfirmModal';
 import { ErrorMessage } from '../../components/ErrorMessage/ErrorMessage';
 import { getClientes, createCliente, updateCliente, deleteCliente } from '../../api/clientes.service';
+import { LoadError } from '../../components/LoadError/LoadError';
+import { describeLoadError } from '../../utils/loadError';
 import type { Cliente } from '../../types/api.types';
 import { formatCpfCnpj, formatTelefone } from '../../utils/formatters';
 import styles from './ClientesPage.module.css';
@@ -22,6 +24,7 @@ export function ClientesPage() {
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Cliente | null>(null);
   const [form, setForm] = useState<FormState>(empty);
@@ -37,7 +40,9 @@ export function ClientesPage() {
 
   async function load() {
     setLoading(true);
+    setLoadError(null);
     try { setClientes(await getClientes()); }
+    catch (err) { setLoadError(describeLoadError(err)); }
     finally { setLoading(false); }
   }
 
@@ -146,6 +151,8 @@ export function ClientesPage() {
 
         {loading ? (
           <p className={styles.loading}>Carregando...</p>
+        ) : loadError ? (
+          <LoadError message={loadError} onRetry={load} />
         ) : (
           <table className={styles.table}>
             <thead>

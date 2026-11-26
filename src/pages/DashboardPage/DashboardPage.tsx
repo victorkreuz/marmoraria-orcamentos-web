@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Layout } from '../../components/Layout/Layout';
 import { getOrcamentos } from '../../api/orcamentos.service';
+import { LoadError } from '../../components/LoadError/LoadError';
+import { describeLoadError } from '../../utils/loadError';
 import type { Orcamento } from '../../types/api.types';
 import { formatMoney } from '../../utils/formatters';
 import styles from './DashboardPage.module.css';
@@ -121,12 +123,17 @@ function getLast6Months(): { month: string; label: string }[] {
 export function DashboardPage() {
   const [orcamentos, setOrcamentos] = useState<Orcamento[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
-  useEffect(() => {
-    getOrcamentos()
-      .then(setOrcamentos)
-      .finally(() => setLoading(false));
-  }, []);
+  useEffect(() => { load(); }, []);
+
+  async function load() {
+    setLoading(true);
+    setLoadError(null);
+    try { setOrcamentos(await getOrcamentos()); }
+    catch (err) { setLoadError(describeLoadError(err)); }
+    finally { setLoading(false); }
+  }
 
   const total = orcamentos.length;
   const pendentes = orcamentos.filter((o) => ['SOLICITADO', 'ENVIADO'].includes(o.statusOrcamento)).length;
@@ -159,6 +166,8 @@ export function DashboardPage() {
     <Layout title="Dashboard">
       {loading ? (
         <p className={styles.loading}>Carregando...</p>
+      ) : loadError ? (
+        <LoadError message={loadError} onRetry={load} />
       ) : (
         <div className={styles.content}>
           <div className={styles.kpiRow}>

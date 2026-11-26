@@ -7,6 +7,8 @@ import { getProdutos, createProduto, updateProduto, deleteProduto } from '../../
 import { uploadImagem } from '../../api/upload.service';
 import type { Produto, UnidadeProduto } from '../../types/api.types';
 import { formatMoney } from '../../utils/formatters';
+import { LoadError } from '../../components/LoadError/LoadError';
+import { describeLoadError } from '../../utils/loadError';
 import styles from './ProdutosPage.module.css';
 
 interface FormState {
@@ -22,6 +24,7 @@ export function ProdutosPage() {
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Produto | null>(null);
   const [form, setForm] = useState<FormState>(empty);
@@ -35,7 +38,9 @@ export function ProdutosPage() {
 
   async function load() {
     setLoading(true);
+    setLoadError(null);
     try { setProdutos(await getProdutos()); }
+    catch (err) { setLoadError(describeLoadError(err)); }
     finally { setLoading(false); }
   }
 
@@ -113,6 +118,8 @@ export function ProdutosPage() {
         />
         {loading ? (
           <p className={styles.loading}>Carregando...</p>
+        ) : loadError ? (
+          <LoadError message={loadError} onRetry={load} />
         ) : (
           <table className={styles.table}>
             <thead>
